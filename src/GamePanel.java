@@ -78,15 +78,27 @@ public class GamePanel extends JPanel implements Runnable{
 		long lastTime = System.nanoTime();
 		long currentTime;
 
+		// display FPS on sceen
+		long timer = 0;
+		int drawCount = 0;
+
 		while(gameThread != null) {
 			currentTime = System.nanoTime();
 			delta += (currentTime - lastTime) / drawInterval; // how much time has passed in frame seconds?
+			timer += currentTime - lastTime;
 			lastTime = currentTime;
 
 			if(delta >= 1) {
 				update();
 				repaint();
 				delta--;
+				drawCount++;
+			}
+
+			if(timer >= 1_000_000_000) {
+				System.out.println("FPS: " + drawCount );
+				drawCount = 0;
+				timer = 0;
 			}
 		}
 	}
@@ -110,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;// gives us better geometry
 		g2.setColor(Color.WHITE);
-		System.out.println("Player "+playerX+","+playerY);
+
 		g2.fillRect(playerX, playerY, tileSize, tileSize);
 		g2.dispose();
 	}
