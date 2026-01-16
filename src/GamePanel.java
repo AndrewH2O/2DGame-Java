@@ -38,34 +38,55 @@ public class GamePanel extends JPanel implements Runnable{
 		gameThread.start(); // calls run method
 	}
 
+	// ************* sleep method game loop *****************************************************
+//	@Override
+//	public void run() {
+//		/*
+//		 * start -----> update/repaint----> sleep ---> repeat
+//		 * start ------------------------------------> repeat 0.016666 seconds
+//		 * */
+//		double drawInterval = 1_000_000_000 / FPS; // nanoseconds unit/FPS = 0.016666 seconds
+//		double nextDrawTime = System.nanoTime() + drawInterval;
+//
+//		while (gameThread != null) {
+//			// update
+//			update();
+//			// draw screen
+//			repaint(); // calls
+//
+//			try {
+//				double remainingTime = nextDrawTime - System.nanoTime();
+//				remainingTime /= 1_000_000; //convert to milliseconds
+//				if(remainingTime < 0){ // did we use all time painting?
+//					remainingTime = 0;
+//				}
+//				Thread.sleep((long) remainingTime);
+//
+//				nextDrawTime += drawInterval;
+//
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
+	// ************* delta or accumulator game loop *********************************************
 	@Override
 	public void run() {
-		/*
-		 * start -----> update/repaint----> sleep ---> repeat
-		 * start ------------------------------------> repeat 0.016666 seconds
-		 * */
 		double drawInterval = 1_000_000_000 / FPS; // nanoseconds unit/FPS = 0.016666 seconds
-		double nextDrawTime = System.nanoTime() + drawInterval;
+		double delta = 0;
+		long lastTime = System.nanoTime();
+		long currentTime;
 
-		while (gameThread != null) {
-			// update
-			update();
-			// draw screen
-			repaint(); // calls
+		while(gameThread != null) {
+			currentTime = System.nanoTime();
+			delta += (currentTime - lastTime) / drawInterval; // how much time has passed in frame seconds?
+			lastTime = currentTime;
 
-			try {
-				double remainingTime = nextDrawTime - System.nanoTime();
-				remainingTime /= 1_000_000; //convert to milliseconds
-				if(remainingTime < 0){ // did we use all time painting?
-					remainingTime = 0;
-				}
-				Thread.sleep((long) remainingTime);
-
-				nextDrawTime += drawInterval;
-
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if(delta >= 1) {
+				update();
+				repaint();
+				delta--;
 			}
 		}
 	}
