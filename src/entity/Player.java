@@ -27,31 +27,35 @@ public class Player extends Entity {
 	}
 
 	public void update() {
-		if(keyHandler.upPressed) {
-			direction = "up";
-			y -= speed;
-		}
-		else if(keyHandler.downPressed) {
-			direction = "down";
-			y += speed;
-		}
-		else if(keyHandler.leftPressed) {
-			direction = "left";
-			x -= speed;
-		}
-		else if(keyHandler.rightPressed) {
-			direction = "right";
-			x += speed;
+		if(keyHandler.downPressed || keyHandler.upPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+			// add above if so that character animation is only when up down left or right is pressed
+			if(keyHandler.upPressed) {
+				direction = "up";
+				y -= speed;
+			}
+			else if(keyHandler.downPressed) {
+				direction = "down";
+				y += speed;
+			}
+			else if(keyHandler.leftPressed) {
+				direction = "left";
+				x -= speed;
+			}
+			else if(keyHandler.rightPressed) {
+				direction = "right";
+				x += speed;
+			}
+
+			// update animation as this runs 60 times per second
+			// every 10 count the spriteNum is changed between 1 and 2
+			spriteCounter++;
+			if(spriteCounter >= 12) {
+				if (spriteNum == 1) spriteNum = 2;
+				else if (spriteNum == 2) spriteNum = 1;
+				spriteCounter = 0;
+			}
 		}
 
-		// update animation as this runs 60 times per second
-		// every 10 count the spriteNum is changed between 1 and 2
-		spriteCounter++;
-		if(spriteCounter >= 12) {
-			if (spriteNum == 1) spriteNum = 2;
-			else if (spriteNum == 2) spriteNum = 1;
-			spriteCounter = 0;
-		}
 	}
 
 	public void draw(Graphics2D g) {
