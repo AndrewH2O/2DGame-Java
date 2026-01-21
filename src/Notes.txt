@@ -1,0 +1,15 @@
+Adding world map larger than screen and Camera
+1) modify player class where the player is always at the center of the screen
+2) expand the boundary of our tile drawing
+
+We use worldX and WorldY - player position on world map but not on the screen
+also screenX and screenY - for drawing, draw player at centre of screen
+and scroll the background, the world map
+
+
+TileManager in draw method we implemenent a camera which is a subset of the world
+where the player is always at the center of the screen
+things we need to do
+1. Tile Image
+2. x
+3. y

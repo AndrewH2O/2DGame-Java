@@ -15,11 +15,18 @@ public class GamePanel extends JPanel implements Runnable{
 	// old games had small screens e.g. 320 by 224 so we scale
 	final int scale = 3; // scaling factor larger screens
 
+	// SCREEN SETTINGS
 	public  int tileSize = originalTileSize * scale; // 48 * 48
 	public final int maxScreenCol = 16;
 	public final int maxScreenRow = 12;
 	public final int screenWidth = tileSize * maxScreenCol; // 768
 	public final int screenHeight = tileSize * maxScreenRow; // 576
+
+	// WORLD SETTINGS
+	public final int maxWorldCol = 50;
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
 
 	KeyHandler keyHandler = new KeyHandler();
 
@@ -27,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 	//Time
 	Thread gameThread;
-	Player player = new Player(this, keyHandler);
+	public Player player = new Player(this, keyHandler);
 
 	public GamePanel() {
 		setPreferredSize(new Dimension(screenWidth, screenHeight));

@@ -9,19 +9,27 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Player extends Entity {
-	GamePanel gamePanel;
+	GamePanel gp;
 	KeyHandler keyHandler;
 
+	// where player drawn on screen - at the centre - doesn't change
+	public final int screenX;
+	public final int screenY;
+
 	public Player(GamePanel gamePanel, KeyHandler keyHandler) {
-		this.gamePanel = gamePanel;
+		this.gp = gamePanel;
 		this.keyHandler = keyHandler;
+
+		screenX = gp.screenWidth / 2 - gp.tileSize / 2;
+		screenY = gp.screenHeight / 2 - gp.tileSize / 2;
+
 		setDefaults();
 		getPlayerImage();
 	}
 
 	public void setDefaults() {
-		x = 100;
-		y = 100;
+		worldX = gp.tileSize * 23; // player position on world map (world01.txt) but not on the screen.
+		worldY = gp.tileSize * 21;
 		speed = 4;
 		direction = "down";
 	}
@@ -31,19 +39,19 @@ public class Player extends Entity {
 			// add above if so that character animation is only when up down left or right is pressed
 			if(keyHandler.upPressed) {
 				direction = "up";
-				y -= speed;
+				worldY -= speed;
 			}
 			else if(keyHandler.downPressed) {
 				direction = "down";
-				y += speed;
+				worldY += speed;
 			}
 			else if(keyHandler.leftPressed) {
 				direction = "left";
-				x -= speed;
+				worldX -= speed;
 			}
 			else if(keyHandler.rightPressed) {
 				direction = "right";
-				x += speed;
+				worldX += speed;
 			}
 
 			// update animation as this runs 60 times per second
@@ -80,7 +88,7 @@ public class Player extends Entity {
 				if(spriteNum == 2)image = right2;
 				break;
 		}
-		g.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+		g.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 	}
 
 	public void getPlayerImage() {
