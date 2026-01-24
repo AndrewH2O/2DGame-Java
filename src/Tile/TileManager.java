@@ -82,12 +82,12 @@ public class TileManager {
 			// worldCol = 0, worldRow = 0, worldX = 0 * 48, worldY = 0 * 48
 			int worldX = gp.tileSize * worldCol;
 			int worldY = gp.tileSize * worldRow;
+
 			// if player is x = 500 and y = 500 away from world 0,0
 			// then draw at 500 pixels to left and 500 up so -500, -500
 			// which is -ve gp.player.worldX and -ve gp.player.worldY.
 			// Then as players position is always at the centre of the screen,
-			// qej for +ve gp.player.screenX and +ve gp.player.screenY
-
+			// adj for +ve gp.player.screenX and +ve gp.player.screenY
 			int screenX = worldX - gp.player.worldX + gp.player.screenX;
 			int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
