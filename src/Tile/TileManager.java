@@ -92,7 +92,18 @@ public class TileManager {
 			int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
 			// tile is an array of tile types
-			g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+			// Only draw visible screen area within screen bounds
+			//   | <------screenX ----- Player @ centre ------screenX ---> |
+			// and the same for Y.
+			// The tileSize adj is so that we don't see the edge of the screen filled with black tiles
+			// we overlap the boundary by tileSize around each edge
+			if ((worldX + gp.tileSize > gp.player.worldX - gp.player.screenX) &&
+				(worldX - gp.tileSize < gp.player.worldX + gp.player.screenX) &&
+				(worldY + gp.tileSize > gp.player.worldY - gp.player.screenY) &&
+				(worldY - gp.tileSize < gp.player.worldY + gp.player.screenY)) {
+				g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			}
 			worldCol++;
 
 			if( worldCol == gp.maxWorldCol ) {
