@@ -34,6 +34,10 @@ public class GamePanel extends JPanel implements Runnable{
 
 	//Time
 	Thread gameThread;
+
+	//collision detection
+	public CollisionChecker collisionChecker = new CollisionChecker(this);
+
 	public Player player = new Player(this, keyHandler);
 
 	public GamePanel() {

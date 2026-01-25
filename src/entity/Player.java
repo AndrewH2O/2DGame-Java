@@ -23,6 +23,9 @@ public class Player extends Entity {
 		screenX = gp.screenWidth / 2 - gp.tileSize / 2;
 		screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
+		// for collision detection
+		solidArea = new Rectangle(8, 16, 32, 32-2); // full player width height is 48
+
 		setDefaults();
 		getPlayerImage();
 	}
@@ -39,19 +42,36 @@ public class Player extends Entity {
 			// add above if so that character animation is only when up down left or right is pressed
 			if(keyHandler.upPressed) {
 				direction = "up";
-				worldY -= speed;
 			}
 			else if(keyHandler.downPressed) {
 				direction = "down";
-				worldY += speed;
 			}
 			else if(keyHandler.leftPressed) {
 				direction = "left";
-				worldX -= speed;
 			}
 			else if(keyHandler.rightPressed) {
 				direction = "right";
-				worldX += speed;
+			}
+
+			// check for tile collision
+			collisionOn = false;
+			gp.collisionChecker.checkTile(this);
+			// if no collision, then move
+			if(!collisionOn) {
+				switch (direction) {
+					case "up":
+						worldY -= speed;
+						break;
+					case "down":
+						worldY += speed;
+						break;
+					case "left":
+						worldX -= speed;
+						break;
+					case "right":
+						worldX += speed;
+						break;
+				}
 			}
 
 			// update animation as this runs 60 times per second

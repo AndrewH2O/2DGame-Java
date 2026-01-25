@@ -13,3 +13,18 @@ things we need to do
 1. Tile Image
 2. x
 3. y
+
+
+Collison,
+1) set flag on Tile
+2) which part of player is colliding with the tile
+    Not the whole char just part of it - helps with navigating narrow paths
+    Say just body excl top of head and arms.
+    An entity has a solid area.
+    SolidArea rect is the area where the entity is solid.
+    This isset within an entity. See subclass Player.
+3) CollisionChecker is where we check for collision based on solid area and 2 neighbor tiles
+
+I shrunk the SolidArea rect by 2 pixels as the original code prevented walking left and right along the path
+
+
