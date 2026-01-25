@@ -1,3 +1,6 @@
+Treasure Hunting Game
+3 keys and get treasure
+
 Adding world map larger than screen and Camera
 1) modify player class where the player is always at the center of the screen
 2) expand the boundary of our tile drawing
@@ -26,5 +29,8 @@ Collison,
 3) CollisionChecker is where we check for collision based on solid area and 2 neighbor tiles
 
 I shrunk the SolidArea rect by 2 pixels as the original code prevented walking left and right along the path
+
+
+Added Objects using AssetSetter
 
 

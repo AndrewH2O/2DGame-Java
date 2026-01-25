@@ -2,6 +2,7 @@ package main;
 
 import Tile.TileManager;
 import entity.Player;
+import object.SuperObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +39,11 @@ public class GamePanel extends JPanel implements Runnable{
 	//collision detection
 	public CollisionChecker collisionChecker = new CollisionChecker(this);
 
+	public AssetSetter assetSetter = new AssetSetter(this);
+
 	public Player player = new Player(this, keyHandler);
+
+	public SuperObject[] obj = new SuperObject[10];// is this an object store. Display up to 10 objects in the game
 
 	public GamePanel() {
 		setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -51,6 +56,10 @@ public class GamePanel extends JPanel implements Runnable{
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start(); // calls run method
+	}
+
+	public void setupGame() {
+		assetSetter.setObject();
 	}
 
 	// ************* sleep method game loop *****************************************************
@@ -126,6 +135,11 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;// gives us better geometry
 		tileManager.draw(g2);
+
+		for (int i = 0; i < obj.length; i++) {
+			if(obj[i] != null) obj[i].draw(g2, this);
+		}
+
 		player.draw(g2);
 
 		g2.dispose();
