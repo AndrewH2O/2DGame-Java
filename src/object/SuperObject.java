@@ -10,6 +10,10 @@ public class SuperObject {
 	public String name;
 	public boolean collision = false;
 	public int worldX,worldY;
+	// object collision area is whole rectangle, you could override this for specific objects
+	public Rectangle solidArea = new Rectangle(0,0,48,48);
+	public int solidAreaDefaultX = 0;
+	public int solidAreaDefaultY = 0;
 
 	public void draw(Graphics g2, GamePanel gp){
 		// see TileManager for explanation

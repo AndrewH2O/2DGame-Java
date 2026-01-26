@@ -12,6 +12,9 @@ public class Player extends Entity {
 	GamePanel gp;
 	KeyHandler keyHandler;
 
+	// key count
+	int hasKey = 0;
+
 	// where player drawn on screen - at the centre - doesn't change
 	public final int screenX;
 	public final int screenY;
@@ -20,11 +23,17 @@ public class Player extends Entity {
 		this.gp = gamePanel;
 		this.keyHandler = keyHandler;
 
+		this.name = "Player";
+
 		screenX = gp.screenWidth / 2 - gp.tileSize / 2;
 		screenY = gp.screenHeight / 2 - gp.tileSize / 2;
 
 		// for collision detection
-		solidArea = new Rectangle(8, 16, 32, 32-2); // full player width height is 48
+		solidArea = new Rectangle(8, 16, 32, 32 - 2); // full player width height is 48
+
+		// for object interaction
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 
 		setDefaults();
 		getPlayerImage();
@@ -38,26 +47,28 @@ public class Player extends Entity {
 	}
 
 	public void update() {
-		if(keyHandler.downPressed || keyHandler.upPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+		if (keyHandler.downPressed || keyHandler.upPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
 			// add above if so that character animation is only when up down left or right is pressed
-			if(keyHandler.upPressed) {
+			if (keyHandler.upPressed) {
 				direction = "up";
-			}
-			else if(keyHandler.downPressed) {
+			} else if (keyHandler.downPressed) {
 				direction = "down";
-			}
-			else if(keyHandler.leftPressed) {
+			} else if (keyHandler.leftPressed) {
 				direction = "left";
-			}
-			else if(keyHandler.rightPressed) {
+			} else if (keyHandler.rightPressed) {
 				direction = "right";
 			}
 
 			// check for tile collision
 			collisionOn = false;
 			gp.collisionChecker.checkTile(this);
+
+			// check object collision
+			int objIndex = gp.collisionChecker.checkObject(this, true);// true is player
+			pickUpObject(objIndex);
+
 			// if no collision, then move
-			if(!collisionOn) {
+			if (!collisionOn) {
 				switch (direction) {
 					case "up":
 						worldY -= speed;
@@ -77,13 +88,34 @@ public class Player extends Entity {
 			// update animation as this runs 60 times per second
 			// every 10 count the spriteNum is changed between 1 and 2
 			spriteCounter++;
-			if(spriteCounter >= 12) {
+			if (spriteCounter >= 12) {
 				if (spriteNum == 1) spriteNum = 2;
 				else if (spriteNum == 2) spriteNum = 1;
 				spriteCounter = 0;
 			}
 		}
+	}
 
+	public void pickUpObject(int index) {
+		if (index != 999) {
+			// we have touched an object
+			String objName = gp.obj[index].name;
+			switch (objName) {
+				case "Key":
+					hasKey++;
+					gp.obj[index] = null;
+					System.out.println("Key:" + hasKey);
+					break;
+				case "Door":
+					if(hasKey > 0) {
+						gp.obj[index] = null;
+						hasKey--;
+						System.out.println("Key:" + hasKey);
+
+					}
+					break;
+			}
+		}
 	}
 
 	public void draw(Graphics2D g) {
@@ -92,20 +124,20 @@ public class Player extends Entity {
 		BufferedImage image = null;
 		switch (direction) {
 			case "up":
-				if(spriteNum == 1)image = up1;
-				if(spriteNum == 2)image = up2;
+				if (spriteNum == 1) image = up1;
+				if (spriteNum == 2) image = up2;
 				break;
 			case "down":
-				if(spriteNum == 1)image = down1;
-				if(spriteNum == 2)image = down2;
+				if (spriteNum == 1) image = down1;
+				if (spriteNum == 2) image = down2;
 				break;
 			case "left":
-				if(spriteNum == 1)image = left1;
-				if(spriteNum == 2)image = left2;
+				if (spriteNum == 1) image = left1;
+				if (spriteNum == 2) image = left2;
 				break;
 			case "right":
-				if(spriteNum == 1)image = right1;
-				if(spriteNum == 2)image = right2;
+				if (spriteNum == 1) image = right1;
+				if (spriteNum == 2) image = right2;
 				break;
 		}
 		g.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);

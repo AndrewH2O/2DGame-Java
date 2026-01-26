@@ -33,4 +33,6 @@ I shrunk the SolidArea rect by 2 pixels as the original code prevented walking l
 
 Added Objects using AssetSetter
 
+Object Interaction
+
 
