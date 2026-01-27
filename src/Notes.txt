@@ -35,4 +35,11 @@ Added Objects using AssetSetter
 
 Object Interaction
 
+Sounds
+------
+need to be .wav as default java lib can't process .mp3
+
+making sounds - investigate: beepbox
+
+
 

@@ -26,21 +26,20 @@ public class GamePanel extends JPanel implements Runnable{
 	// WORLD SETTINGS
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
-	public final int worldWidth = tileSize * maxWorldCol;
-	public final int worldHeight = tileSize * maxWorldRow;
 
+	// SYSTEM SETTINGS
 	KeyHandler keyHandler = new KeyHandler();
-
 	TileManager tileManager = new TileManager(this);
+	Sound sound = new Sound();
+
+	//collision detection
+	public CollisionChecker collisionChecker = new CollisionChecker(this);
+	public AssetSetter assetSetter = new AssetSetter(this);
 
 	//Time
 	Thread gameThread;
 
-	//collision detection
-	public CollisionChecker collisionChecker = new CollisionChecker(this);
-
-	public AssetSetter assetSetter = new AssetSetter(this);
-
+	// ENTITY AND OBJECTS
 	public Player player = new Player(this, keyHandler);
 
 	public SuperObject[] obj = new SuperObject[10];// is this an object store. Display up to 10 objects in the game
@@ -60,6 +59,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 	public void setupGame() {
 		assetSetter.setObject();
+		playMusic(0);
 	}
 
 	// ************* sleep method game loop *****************************************************
@@ -143,5 +143,20 @@ public class GamePanel extends JPanel implements Runnable{
 		player.draw(g2);
 
 		g2.dispose();
+	}
+
+	public void playMusic(int i){
+		sound.setFile(i);
+		sound.play();
+		sound.loop();
+	}
+
+	public void stopMusic(){
+		sound.stop();
+	}
+
+	public void playSoundEffect(int i){
+		sound.setFile(i);
+		sound.play();
 	}
 }
