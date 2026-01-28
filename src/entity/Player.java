@@ -13,7 +13,7 @@ public class Player extends Entity {
 	KeyHandler keyHandler;
 
 	// key count
-	int hasKey = 0;
+	public int hasKey = 0;
 
 	// where player drawn on screen - at the centre - doesn't change
 	public final int screenX;
@@ -105,7 +105,7 @@ public class Player extends Entity {
 					gp.playSoundEffect(1);
 					hasKey++;
 					gp.obj[index] = null;
-					System.out.println("Key:" + hasKey);
+					gp.ui.showMessage("Key Collected");
 
 					break;
 				case "Door":
@@ -113,14 +113,22 @@ public class Player extends Entity {
 						gp.playSoundEffect(3);
 						gp.obj[index] = null;
 						hasKey--;
-						System.out.println("Key:" + hasKey);
+						gp.ui.showMessage("You opened the door");
 
+					} else {
+						gp.ui.showMessage("You need a key to open the door");
 					}
 					break;
 				case "Boots":
 					gp.playSoundEffect(2);
 					speed += 2;
 					gp.obj[index] = null;
+					gp.ui.showMessage("Speed up");
+					break;
+				case "Chest":
+					gp.ui.gameOver = true;
+					gp.stopMusic();
+					gp.playSoundEffect(4);
 					break;
 			}
 		}
