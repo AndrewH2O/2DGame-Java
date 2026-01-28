@@ -4,6 +4,7 @@ import object.OBJ_Key;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 
 public class UI {
 	GamePanel gp;
@@ -13,6 +14,9 @@ public class UI {
 	public String message = "";
 	int messageCounter = 0;
 	public boolean gameOver = false;
+	DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+
+	double playTime;
 
 	public UI(GamePanel gp) {
 		this.gp = gp;
@@ -43,6 +47,12 @@ public class UI {
 			y = gp.screenHeight/2 - (gp.tileSize * 3); // raise text a bit
 			g2.drawString(text, x, y);
 
+			text = "Your Time is :" + decimalFormat.format(playTime) + "!";
+			textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+			x = gp.screenWidth/2 - textLength/2;
+			y = gp.screenHeight/2 - (gp.tileSize * 4); // raise text a bit
+			g2.drawString(text, x, y);
+
 			g2.setFont(arial_80_bold);
 			g2.setColor(Color.YELLOW);
 			text = "Congratulations";
@@ -63,6 +73,11 @@ public class UI {
 
 			g2.drawString("x "+gp.player.hasKey,74,65);
 
+			// TIME
+			playTime += (double)1/60; // as draw gets called 60 times a second we add 1/60 to playTime.
+			g2.drawString("Time: "+ decimalFormat.format(playTime), gp.tileSize * 11, 65);
+
+			// MESSAGE
 			if(messageOn){
 				g2.setFont(g2.getFont().deriveFont(30F)); // if we already set font we can change its size
 				g2.drawString(message, gp.tileSize/2, gp.tileSize * 5);
