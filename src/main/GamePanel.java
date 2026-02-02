@@ -7,17 +7,18 @@ import object.SuperObject;
 import javax.swing.*;
 import java.awt.*;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
 	// screen settings
 	final int originalTileSize = 16;
 
+	Font arial_40;
 	int FPS = 60;
 
 	// old games had small screens e.g. 320 by 224 so we scale
 	final int scale = 3; // scaling factor larger screens
 
 	// SCREEN SETTINGS
-	public  int tileSize = originalTileSize * scale; // 48 * 48
+	public int tileSize = originalTileSize * scale; // 48 * 48
 	public final int maxScreenCol = 16;
 	public final int maxScreenRow = 12;
 	public final int screenWidth = tileSize * maxScreenCol; // 768
@@ -52,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 		setDoubleBuffered(true);
 		this.addKeyListener(keyHandler);
 		this.setFocusable(true);
+		arial_40 = new Font("Arial", Font.PLAIN, 40);
 	}
 
 	public void startGameThread() {
@@ -108,21 +110,21 @@ public class GamePanel extends JPanel implements Runnable{
 		long timer = 0;
 		int drawCount = 0;
 
-		while(gameThread != null) {
+		while (gameThread != null) {
 			currentTime = System.nanoTime();
 			delta += (currentTime - lastTime) / drawInterval; // how much time has passed in frame seconds?
 			timer += currentTime - lastTime;
 			lastTime = currentTime;
 
-			if(delta >= 1) {
+			if (delta >= 1) {
 				update();
 				repaint();
 				delta--;
 				drawCount++;
 			}
 
-			if(timer >= 1_000_000_000) {
-				System.out.println("FPS: " + drawCount );
+			if (timer >= 1_000_000_000) {
+				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
 			}
@@ -136,29 +138,47 @@ public class GamePanel extends JPanel implements Runnable{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;// gives us better geometry
+
+		long drawStart = System.nanoTime();
+		//DEBUG - how long is stuff taking?
+		if (keyHandler.checkDrawTime) {
+			drawStart = System.nanoTime();
+		}
+
+
 		tileManager.draw(g2);
 
 		for (int i = 0; i < obj.length; i++) {
-			if(obj[i] != null) obj[i].draw(g2, this);
+			if (obj[i] != null) obj[i].draw(g2, this);
 		}
 
 		player.draw(g2);
+
+		// DEBUG
+		if(keyHandler.checkDrawTime) {
+			long drawEnd = System.nanoTime();
+			long passedTime = drawEnd - drawStart;
+			g2.setFont(arial_40);
+			g2.setColor(Color.WHITE);
+			g2.drawString("Draw time: " + passedTime + "ns", 10, 400);
+			System.out.println("Draw time: " + passedTime + "ns");
+		}
 
 		ui.draw(g2);
 		g2.dispose();
 	}
 
-	public void playMusic(int i){
+	public void playMusic(int i) {
 		music.setFile(i);
 		music.play();
 		music.loop();
 	}
 
-	public void stopMusic(){
+	public void stopMusic() {
 		music.stop();
 	}
 
-	public void playSoundEffect(int i){
+	public void playSoundEffect(int i) {
 		soundEffect.setFile(i);
 		soundEffect.play();
 	}

@@ -1,6 +1,7 @@
 package Tile;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,30 +23,25 @@ public class TileManager {
 	}
 
 	public void getTileImage() {
+		setupTile(0, "grass", false);
+		setupTile(1, "wall", true);
+		setupTile(2, "water", true);
+		setupTile(3, "earth", false);
+		setupTile(4, "tree", true);
+		setupTile(5, "sand", false);
+	}
+
+	public void setupTile(int index, String imageName, boolean collision) {
+		UtilityTool ut = new UtilityTool();
 		try {
-			tile[0] = new Tile();
-			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
-			tile[1] = new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-			tile[1].collision = true;
-
-			tile[2] = new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
-			tile[2].collision = true;
-
-			tile[3] = new Tile();
-			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
-
-			tile[4] = new Tile();
-			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-			tile[4].collision = true;
-
-			tile[5] = new Tile();
-			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png"));
-
+			tile[index] = new Tile();
+			tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
+			tile[index].image = ut.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+			tile[index].collision = collision;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public void loadMap(String mapFilePath) {
@@ -55,16 +51,16 @@ public class TileManager {
 
 			int col = 0;
 			int row = 0;
-			while(col < gp.maxWorldCol && row < gp.maxWorldRow) {
+			while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
 				String line = br.readLine();
-				while(col < gp.maxWorldCol) {
+				while (col < gp.maxWorldCol) {
 					String[] numbers = line.split(" ");
 					int num = Integer.parseInt(numbers[col]);
 					mapTileNum[col][row] = num;
 					col++;
 
 				}
-				if(col == gp.maxWorldCol) { //goto next row
+				if (col == gp.maxWorldCol) { //goto next row
 					col = 0;
 					row++;
 				}
@@ -81,7 +77,7 @@ public class TileManager {
 		int worldCol = 0;
 		int worldRow = 0;
 
-		while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
+		while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 			// mapTileNum tells us the tile type number at this position
 			int tileNum = mapTileNum[worldCol][worldRow];
 
@@ -106,20 +102,20 @@ public class TileManager {
 			// The tileSize adj is so that we don't see the edge of the screen filled with black tiles
 			// we overlap the boundary by tileSize around each edge
 			if ((worldX + gp.tileSize > gp.player.worldX - gp.player.screenX) &&
-				(worldX - gp.tileSize < gp.player.worldX + gp.player.screenX) &&
-				(worldY + gp.tileSize > gp.player.worldY - gp.player.screenY) &&
-				(worldY - gp.tileSize < gp.player.worldY + gp.player.screenY)) {
-				g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+					(worldX - gp.tileSize < gp.player.worldX + gp.player.screenX) &&
+					(worldY + gp.tileSize > gp.player.worldY - gp.player.screenY) &&
+					(worldY - gp.tileSize < gp.player.worldY + gp.player.screenY)) {
+				// don't need width height after scaling
+				g2.drawImage(tile[tileNum].image, screenX, screenY, null);
 			}
 			worldCol++;
 
-			if( worldCol == gp.maxWorldCol ) {
+			if (worldCol == gp.maxWorldCol) {
 				worldCol = 0;
 				worldRow++;
 
 			}
 		}
-
 
 
 	}

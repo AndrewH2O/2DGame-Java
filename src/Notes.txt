@@ -41,5 +41,14 @@ need to be .wav as default java lib can't process .mp3
 
 making sounds - investigate: beepbox
 
+Performance
+-----------
+In tilemanager we scale tiles each time in draw loop as per gp.tileSize params below.
+g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+Optimise by scaling before hand.
+
+Press T to show time taken to draw each frame
+
 
 

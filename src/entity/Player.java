@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -109,7 +110,7 @@ public class Player extends Entity {
 
 					break;
 				case "Door":
-					if(hasKey > 0) {
+					if (hasKey > 0) {
 						gp.playSoundEffect(3);
 						gp.obj[index] = null;
 						hasKey--;
@@ -134,7 +135,7 @@ public class Player extends Entity {
 		}
 	}
 
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D g2) {
 		//g.setColor(Color.WHITE);
 		//g.fillRect(x, y, gamePanel.tileSize, gamePanel.tileSize);
 		BufferedImage image = null;
@@ -156,21 +157,37 @@ public class Player extends Entity {
 				if (spriteNum == 2) image = right2;
 				break;
 		}
-		g.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+		// don't need params gp.tileSize scaling
+		g2.drawImage(image, screenX, screenY, null);
+		/*
+		//show collision area
+		g2.setColor(Color.RED);
+		g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+		 */
+
 	}
 
 	public void getPlayerImage() {
+		up1 = setupImage("boy_up_1");
+		up2 = setupImage("boy_up_2");
+		down1 = setupImage("boy_down_1");
+		down2 = setupImage("boy_down_2");
+		left1 = setupImage("boy_left_1");
+		left2 = setupImage("boy_left_2");
+		right1 = setupImage("boy_right_1");
+		right2 = setupImage("boy_right_2");
+	}
+
+	public BufferedImage setupImage(String imageName) {
+		UtilityTool ut = new UtilityTool();
+		BufferedImage image = null;
 		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/" + imageName + ".png"));
+			image = ut.scaleImage(image, gp.tileSize, gp.tileSize);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return image;
 	}
 }
