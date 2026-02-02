@@ -14,7 +14,7 @@ public class Player extends Entity {
 	KeyHandler keyHandler;
 
 	// key count
-	public int hasKey = 0;
+	//public int hasKey = 0;
 
 	// where player drawn on screen - at the centre - doesn't change
 	public final int screenX;
@@ -99,39 +99,7 @@ public class Player extends Entity {
 
 	public void pickUpObject(int index) {
 		if (index != 999) {
-			// we have touched an object
-			String objName = gp.obj[index].name;
-			switch (objName) {
-				case "Key":
-					gp.playSoundEffect(1);
-					hasKey++;
-					gp.obj[index] = null;
-					gp.ui.showMessage("Key Collected");
 
-					break;
-				case "Door":
-					if (hasKey > 0) {
-						gp.playSoundEffect(3);
-						gp.obj[index] = null;
-						hasKey--;
-						gp.ui.showMessage("You opened the door");
-
-					} else {
-						gp.ui.showMessage("You need a key to open the door");
-					}
-					break;
-				case "Boots":
-					gp.playSoundEffect(2);
-					speed += 2;
-					gp.obj[index] = null;
-					gp.ui.showMessage("Speed up");
-					break;
-				case "Chest":
-					gp.ui.gameOver = true;
-					gp.stopMusic();
-					gp.playSoundEffect(4);
-					break;
-			}
 		}
 	}
 

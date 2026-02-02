@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public final int maxWorldRow = 50;
 
 	// SYSTEM SETTINGS
-	KeyHandler keyHandler = new KeyHandler();
+	KeyHandler keyHandler = new KeyHandler(this);
 	TileManager tileManager = new TileManager(this);
 	Sound music = new Sound();
 	Sound soundEffect = new Sound();
@@ -46,6 +46,12 @@ public class GamePanel extends JPanel implements Runnable {
 	public Player player = new Player(this, keyHandler);
 
 	public SuperObject[] obj = new SuperObject[10];// is this an object store. Display up to 10 objects in the game
+
+	// GAME STATE
+	public int gameState;
+	public final int playState = 1;
+	public final int pauseState = 2;
+
 
 	public GamePanel() {
 		setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -64,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void setupGame() {
 		assetSetter.setObject();
 		playMusic(0);
+		gameState = playState;
 	}
 
 	// ************* sleep method game loop *****************************************************
@@ -132,7 +139,13 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void update() {
-		player.update();
+		if(gameState == playState) {
+			player.update();
+		}
+		if(gameState == pauseState) {
+			// nothing
+		}
+
 	}
 
 	public void paintComponent(Graphics g) {

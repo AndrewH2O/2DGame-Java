@@ -56,4 +56,28 @@ Pixel Art
 Youtube channel tutorials Pixel Pete or AdamCYounis
 
 
+*==========*
+|  Part 2  |
+*==========*
+Game state,
+NPC & Dialogue system,
+Player status (Life, level, attack, defense exp etc),
+Monsters (Simple AI) + Battle System (hit detection)
+Inventory
+Merchant NPC (Buy Sell items)
+Title screen, Game over screen
+Environment interactions (cutting trees)
+Item drop
+In Game menu
+Advanced UI
+New Area with transition
+Events (Boss fight)
+Save & Load
+Ending Screen
+etc
+
+
+Game State
+----------
+play/pause
 
