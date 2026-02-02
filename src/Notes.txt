@@ -51,4 +51,9 @@ Optimise by scaling before hand.
 Press T to show time taken to draw each frame
 
 
+Pixel Art
+---------
+Youtube channel tutorials Pixel Pete or AdamCYounis
+
+
 

@@ -16,26 +16,71 @@ public class TileManager {
 
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
-		tile = new Tile[10]; // 10 kinds of tiles
+		tile = new Tile[50];
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		getTileImage();
-		loadMap("/tile_maps/world01.txt");
+		loadMap("/tile_maps/worldV2.txt");
 	}
 
 	public void getTileImage() {
-		setupTile(0, "grass", false);
-		setupTile(1, "wall", true);
-		setupTile(2, "water", true);
-		setupTile(3, "earth", false);
-		setupTile(4, "tree", true);
-		setupTile(5, "sand", false);
+		// tiles 0-9 are placeholder tiles
+		setupTile(0, "grass00", false);
+		setupTile(1, "grass00", false);
+		setupTile(2, "grass00", false);
+		setupTile(3, "grass00", false);
+		setupTile(4, "grass00", false);
+		setupTile(5, "grass00", false);
+		setupTile(6, "grass00", false);
+		setupTile(7, "grass00", false);
+		setupTile(8, "grass00", false);
+		setupTile(9, "grass00", false);
+
+		// use 2 digit numbers make map spacing consistent avoid mix 1 and 2digit
+		setupTile(10, "grass00", false);
+		setupTile(11, "grass01", false);
+		setupTile(12, "water00", true);
+		setupTile(13, "water01", true);
+		setupTile(14, "water02", true);
+
+		setupTile(15, "water03", true);
+		setupTile(16, "water04", true);
+		setupTile(17, "water05", true);
+		setupTile(18, "water06", true);
+		setupTile(19, "water07", true);
+
+		setupTile(20, "water08", true);
+		setupTile(21, "water09", true);
+		setupTile(22, "water10", true);
+		setupTile(23, "water11", true);
+		setupTile(24, "water12", true);
+
+		setupTile(25, "water13", true);
+		setupTile(26, "road00", false);
+		setupTile(27, "road01", false);
+		setupTile(28, "road02", false);
+		setupTile(29, "road03", false);
+
+		setupTile(30, "road04", false);
+		setupTile(31, "road05", false);
+		setupTile(32, "road06", false);
+		setupTile(33, "road07", false);
+		setupTile(34, "road08", false);
+
+		setupTile(35, "road09", false);
+		setupTile(36, "road10", false);
+		setupTile(37, "road11", false);
+		setupTile(38, "road12", false);
+		setupTile(39, "earth", false);
+
+		setupTile(40, "wall", true);
+		setupTile(41, "tree", true);
 	}
 
 	public void setupTile(int index, String imageName, boolean collision) {
 		UtilityTool ut = new UtilityTool();
 		try {
 			tile[index] = new Tile();
-			tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
+			tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/new_version/" + imageName + ".png"));
 			tile[index].image = ut.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
 			tile[index].collision = collision;
 		} catch (IOException e) {
